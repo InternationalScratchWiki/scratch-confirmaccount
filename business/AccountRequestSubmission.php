@@ -109,7 +109,12 @@ class AccountRequestSubmission {
 		}
 		# Check that user wasn't blocked from submitting account requests (added by jvvg)
 		# The list of blocked usernames is stored in /w/extconfig/accreqblocks.php
-		require realpath(dirname(__FILE__) . '/..') . '/config/accreqblocks.php';
+		if (file_exists(realpath(dirname(__FILE__) . '/..') . '/config/accreqblocks.php')) {
+			require realpath(dirname(__FILE__) . '/..') . '/config/accreqblocks.php';
+		} else {
+			$acc_req_blocked_usernames = array();
+		}
+		
 		if (in_array(strtolower($u->getName()), $acc_req_blocked_usernames)) {
 			return [
 				'accountreq_blocked',
